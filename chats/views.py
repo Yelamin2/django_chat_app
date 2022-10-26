@@ -1,9 +1,15 @@
+from webbrowser import get
 from rest_framework import generics
-
-from chats.permissions import IsAuthorOrReadOnly
+from .permissions import IsAuthorOrReadOnly
 from .models import Chat, Room
+from rest_framework import generics
+from django.shortcuts import get_object_or_404
 from .serializers import ChatSerializer, RoomSerializer
-from django.shortcuts import render
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
+from . import permissions
+from . import serializers
+from . import models
 
 # Create your views here.
 class RoomListAPIView(generics.ListAPIView):
@@ -12,15 +18,15 @@ class RoomListAPIView(generics.ListAPIView):
 
 class ChatListAPIView(generics.ListCreateAPIView):
     serializer_class = ChatSerializer
+    queryset=Chat.objects.all()
+    permission_classes = (IsAuthorOrReadOnly,)
 
-    def get_queryset(self):
-        room = self.kwargs['room']
-        return Chat.objects.filter(room=room)
-
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+    
 
 class ChatDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Chat.objects.all()
     serializer_class= ChatSerializer
     permission_classes = (IsAuthorOrReadOnly,)
+   
+
+   

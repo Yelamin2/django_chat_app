@@ -25,4 +25,4 @@ urlpatterns = [
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     path('', include('frontend.urls')),
     path('api-auth/', include('rest_framework.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -6,6 +6,7 @@ import Register from "./components/Register";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Room from "./components/Rooms";
 
 function App() {
   
@@ -16,15 +17,16 @@ function App() {
   
    <Container fluid="md-4 w-50">
               <Row>
-                <Col className= "products_list" md={{ span: 3, offset: 3 }}>
+                <Col className= "products_list" md={{ span: 4, offset: 2 }}>
                 <div>{auth ? <Chat /> : <LoginForm setAuth={setAuth} />}</div>
                 
                 </Col>
                 <Col className= "products_list" md={{ span: 3, offset: 3 }}>
-                <div>{auth ? <Chat /> : <Register setAuth={setAuth} />}</div>
+                <div>{auth ? "" : <Register setAuth={setAuth} />}</div>
   
                 </Col>
               </Row>
+              <div><Room /></div>
             </Container>
   
   </>;

@@ -11,10 +11,10 @@ class Room(models.Model):
         return self.room_name
 
 class Chat(models.Model):
-    message =models.CharField(max_length= 500)
+    message =models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     time = models.DateTimeField(auto_now_add=True, null=True)
-    room_name = models.ForeignKey(Room, on_delete=models.CASCADE, null=True)
+    room_name = models.ForeignKey(Room, on_delete=models.CASCADE, blank=True)
 
     def __str__(self):
         return "%s %s" % (self.room_name, self.message)
