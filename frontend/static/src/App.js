@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
-import Chat from "./components/Chat";
+import Chat from "./components/Rooms/Chat";
 import LoginForm from "./components/LoginForm";
 import Register from "./components/Register";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Room from "./components/Rooms";
+import Room from "./components/Rooms/Rooms";
+
 
 function App() {
   

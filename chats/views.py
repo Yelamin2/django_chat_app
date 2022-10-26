@@ -12,9 +12,14 @@ from . import serializers
 from . import models
 
 # Create your views here.
-class RoomListAPIView(generics.ListAPIView):
+class RoomListAPIView(generics.ListCreateAPIView):
     queryset = Room.objects.all()
     serializer_class= RoomSerializer
+
+class RoomDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Room.objects.all()
+    serializer_class= RoomSerializer
+    permission_classes = (IsAuthorOrReadOnly,)
 
 class ChatListAPIView(generics.ListCreateAPIView):
     serializer_class = ChatSerializer

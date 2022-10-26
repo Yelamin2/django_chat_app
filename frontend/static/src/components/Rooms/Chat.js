@@ -3,8 +3,8 @@ import Cookies from "js-cookie";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-function Chat(props){
-    const [newChats, setNewChats]= useState({message:"",author:"",time:"",room_name:""});
+function Chat(){
+    const [newChats, setNewChats]= useState({message:"",author:"",time:"",roomname:Number});
     const [text, setText] = useState("");
     const[chats, setChats]= useState([])
 
@@ -15,7 +15,7 @@ function Chat(props){
     };
 
     const getChats = useCallback(async() => {
-        const response = await fetch("/api_v1/chats/rooms/2/chats/").catch(handleError);
+        const response = await fetch("/api_v1/chats/rooms/3/chats/").catch(handleError);
         if (!response.ok){
             throw new Error("Network response was not OK");
         } else {
@@ -44,8 +44,9 @@ function Chat(props){
         message: e.target.value,
         author:1,
         time: new Date(),
-        room_name:2,
+        roomname:2,
     }));
+    
     }
 
     //   const handleChange = (e) => {({
@@ -80,7 +81,7 @@ function Chat(props){
         console.log('Working ');
         console.log({newChats}, {chats} ,(options.body));
     
-        const response = await fetch("/api_v1/chats/rooms/2/chats/", options).catch(
+        const response = await fetch("/api_v1/chats/rooms/3/chats/", options).catch(
             handleError
         );
         if (!response.ok){
