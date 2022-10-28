@@ -18,6 +18,8 @@ function App() {
   
    <Container fluid="md-4 w-50">
               <Row>
+                <Col></Col>
+                <Col></Col>
                 <Col className= "products_list" md={{ span: 4, offset: 2 }}>
                 <div>{auth ? <Chat /> : <LoginForm setAuth={setAuth} />}</div>
                 

@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
 
 function Room(props){
@@ -28,7 +29,7 @@ function Room(props){
         getRoom();
     }, [getRoom]);
 
-    console.log({rooms})
+    // console.log(type.rooms)
 
    
 
@@ -40,12 +41,37 @@ function Room(props){
     //         x.style.display = "none";
     //     }
     // }
+    
 
     const addRoom =async (e) => {
     
         e.preventDefault();
-        console.log('room', roomB);
+        // console.log('room', roomB);
         if (roomB.roomname==""){
+            return
+        };
+
+        const names=rooms.map(({roomname}) => roomname );
+        console.log("names",names);
+
+        if(names.includes(roomB.roomname) ){
+            console.log('Pick other name, this already exists');
+            // sconst [show, setShow] = useState(false);
+            const stat= true
+            const handleClose = () => stat= false;
+            // const handleShow = () => show= true;
+            const danger = () =>{<Modal show="true" onHide={handleClose}>
+                <Modal.Header closeButton>
+                <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                </Modal.Footer>
+            </Modal>};
+            
             return
         }
       
@@ -58,7 +84,7 @@ function Room(props){
             body: JSON.stringify(roomB),
         };
         // console.log('Working rooms');
-        console.log({roomB}, {rooms} ,(options.body));
+        // console.log({roomB}, {rooms} ,(options.body));
     
         const response = await fetch("/api_v1/chats/rooms/", options).catch(
             handleError
@@ -67,7 +93,7 @@ function Room(props){
             throw new Error("Network didn't accept");
         } else {
             const data = await response.json();
-            console.log('data', data);
+            // console.log('data', data);
         }
         // setRoomB({roomname:""});
     };
@@ -76,15 +102,16 @@ function Room(props){
     //     setNewRoom((newRoom) =>
     //     ({...newRoom, [e.target.value]:e.target.value }));
     // };
-
+    
     const handleChange = (e) => {
         setRoomB((roomB) => ({
             ...roomB,
             [e.target.name]:e.target.value
 
         }));
-        
+           
         }
+    
     
     
 

@@ -94,11 +94,11 @@ function Chat(){
         };
     
 
-//   const chatItem = chats.map(({message}, id)=>(
-//     <div key={id}>
-//         <li>{message}</li>
-//     </div>
-//   ))
+    const chatItem = chats.map(({message}, id)=>(
+        <div key={id}>
+            <li>{message}</li>
+        </div>
+    ));
 
     return <>
     
@@ -133,7 +133,7 @@ function Chat(){
         </Button>
     </Form>
         
-            {/* {chatItem} */}
+            {chatItem}
             </div>
     </>
 }
