@@ -1,6 +1,6 @@
 from webbrowser import get
 from rest_framework import generics
-from .permissions import IsAuthorOrReadOnly
+from .permissions import IsAuthorOrAdminOrReadOnly
 from .models import Chat, Room
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
@@ -19,19 +19,26 @@ class RoomListAPIView(generics.ListCreateAPIView):
 class RoomDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Room.objects.all()
     serializer_class= RoomSerializer
-    permission_classes = (IsAuthorOrReadOnly,)
+    permission_classes = (IsAuthorOrAdminOrReadOnly,)
+
+    def get_queryset(self):
+        Room =self.request.chat
+        
 
 class ChatListAPIView(generics.ListCreateAPIView):
     serializer_class = ChatSerializer
-    queryset=Chat.objects.all()
-    permission_classes = (IsAuthorOrReadOnly,)
+    # queryset=Chat.objects.all()
+    permission_classes = (IsAuthorOrAdminOrReadOnly,)
+    def get_queryset(self):
+        room = self.kwargs['room']
+        return Chat.objects.filter(room=room)
 
     
 
 class ChatDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Chat.objects.all()
     serializer_class= ChatSerializer
-    permission_classes = (IsAuthorOrReadOnly,)
+    permission_classes = (IsAuthorOrAdminOrReadOnly,)
    
 
    

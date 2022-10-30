@@ -28,6 +28,7 @@ function LoginForm(props) {
       },
       body: JSON.stringify(state),
     };
+    console.log(Cookies)
 
     const response = await fetch("/dj-rest-auth/login/", options).catch(
       handleError

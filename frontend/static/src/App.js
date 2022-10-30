@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
-import Chat from "./components/Rooms/Chat";
+import Chat from "./components/Rooms/Chats/Chat";
 import LoginForm from "./components/LoginForm";
 import Register from "./components/Register";
 import Container from 'react-bootstrap/Container';
@@ -10,6 +10,14 @@ import Room from "./components/Rooms/Rooms";
 
 
 function App() {
+
+  // const [roomId, setRoomId] = useState({id:2});
+
+  // const addRoomId = (newRoomId) => {
+  //   setRoomId([...roomId, newRoomId]);
+  // };
+
+  // console.log("App RoomId", roomId, "App addRoomId", addRoomId)
   
 
 
@@ -18,20 +26,17 @@ function App() {
   
    <Container fluid="md-4 w-50">
               <Row>
-                <Col></Col>
-                <Col></Col>
-                <Col className= "products_list" md={{ span: 4, offset: 2 }}>
-                <div>{auth ? <Chat /> : <LoginForm setAuth={setAuth} />}</div>
-                
+                <Col className= "products_list" md={{ span: 3, offset: 1 }}>
+                <div>{auth ? <Room /> : <LoginForm setAuth={setAuth} />}</div>
                 </Col>
                 <Col className= "products_list" md={{ span: 3, offset: 3 }}>
-                <div>{auth ? "" : <Register setAuth={setAuth} />}</div>
-  
+                <div>{auth ? <Chat /> : <Register setAuth={setAuth} />}</div>
                 </Col>
               </Row>
-              <div><Room /></div>
+              {/* <div><Room /></div> */}
             </Container>
-  
+  {/* <Chat roomId={addRoomId}/>
+  <Room addRoomId={addRoomId}/> */}
   </>;
 }
 

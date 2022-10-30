@@ -1,26 +1,48 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useReducer } from "react";
 import Cookies from "js-cookie";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-function Chat(){
-    const [newChats, setNewChats]= useState({message:"",author:"",time:"",roomname:Number});
+var chatroom = 2;
+function Chat({roomId}){
+    const [newChats, setNewChats]= useState({message:"",author:"",time:"",room:Number});
     const [text, setText] = useState("");
     const[chats, setChats]= useState([])
 
     // const author = user.id;
+    
+    
+    if(roomId > 0){
+        chatroom = roomId;
+        
+    
+    }
+    
+    
+    
+
+    console.log("Here is the roomId value", roomId, chatroom);
+    
+  
+   
+
+   
 
     const handleError = (err) => {
         console.warn(err);
     };
 
     const getChats = useCallback(async() => {
-        const response = await fetch("/api_v1/chats/rooms/3/chats/").catch(handleError);
+
+        console.log('RoomState chats',chatroom);
+      
+        const response = await fetch(`/api_v1/rooms/${chatroom}/chats/`).catch(handleError);
         if (!response.ok){
             throw new Error("Network response was not OK");
         } else {
             const data = await response.json();
             setChats(data);
+            console.log("Mye Data",data);
         }
 
     },[]);
@@ -29,38 +51,30 @@ function Chat(){
         getChats();
     }, [getChats]);
 
+    const cookie = String(Cookies.get("csrftoken"));
+
     
 
     const handleClick = () => {
-        localStorage.removeItem('All');
-        console.log('Working ' ,)
-       
-        
+        console.log(cookie);
+        Cookies.remove(cookie,{path:''});
+        console.log('Working log out' ,);  
+
       };
 
     const handleChange = (e) => {
     setNewChats((newChats) => ({
         ...newChats,
+        
         message: e.target.value,
-        author:1,
+        author:2,
         time: new Date(),
-        roomname:2,
+        room:chatroom,
+        
+        
     }));
     
     }
-
-    //   const handleChange = (e) => {({
-    //     message: e.target.value,
-    //     author:"User1",
-    //     time: new Date(),
-    //     room_name:"2"}) => {
-    //     setChats([...chats,{
-    //         message:e.target.value,
-    //         author:"User1",
-    //         time: new Date(),
-    //         room_name:"2"}]);}
-    //     }
-
 
 
     const handleSubmit = async (e) => {
@@ -78,10 +92,11 @@ function Chat(){
             },
             body: JSON.stringify(newChats),
         };
+        
         console.log('Working ');
         console.log({newChats}, {chats} ,(options.body));
     
-        const response = await fetch("/api_v1/chats/rooms/3/chats/", options).catch(
+        const response = await fetch(`/api_v1/rooms/${chatroom}/chats/`, options).catch(
             handleError
         );
         if (!response.ok){
@@ -90,15 +105,21 @@ function Chat(){
             const data = await response.json();
             console.log(data);
         }
-        setNewChats({message:"",author:"",time:"",room_name:""});
+        setNewChats({message:"",author:"",time:"",room:Number});
         };
+
+    console.log({chats})
     
 
-    const chatItem = chats.map(({message}, id)=>(
+    const chatItem = chats.map(({room, message }, id)=>(
         <div key={id}>
-            <li>{message}</li>
+            <ul>{room}</ul>
+            <ul>{message} </ul>
+            
         </div>
     ));
+
+ 
 
     return <>
     

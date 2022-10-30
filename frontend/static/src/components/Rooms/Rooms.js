@@ -4,18 +4,21 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import Chat from "./Chats/Chat";
 
 
-function Room(props){
-    const [rooms, setRooms]= useState();
+function Room(){
+    const [rooms, setRooms]= useState([]);
     const [roomB, setRoomB] = useState({roomname:""});
+    const [roomId, setRoomId] = useState({id:2})
+    
 
     const handleError = (err) => {
         console.warn(err);
     };
 
     const getRoom = useCallback(async() => {
-        const response = await fetch("/api_v1/chats/rooms/").catch(handleError);
+        const response = await fetch("/api_v1/rooms/").catch(handleError);
         if (!response.ok){
             throw new Error("Network response was not OK");
         } else {
@@ -29,50 +32,45 @@ function Room(props){
         getRoom();
     }, [getRoom]);
 
-    // console.log(type.rooms)
+    const roomsList = rooms.map(({room, id})=>(
+        <div key={id}>
+            <ul onClick={ ()=> {setRoomId({id}, room);
+
+            console.log(roomId.id);
+           
+        }
+                   
+         } >{room}</ul>
+            
+            
+            
+        </div>
+        
+        
+    ));
+
+    
+
+    console.log("RoomId",roomId, "AddRoomId")
 
    
 
-    // const makeChange = (e) => {
-    //     var x = document.getElementById("inputName");
-    //     if(x.style.display ==="none"){
-    //         x.style.display ="block";
-    //     } else {
-    //         x.style.display = "none";
-    //     }
-    // }
-    
+   
 
     const addRoom =async (e) => {
     
         e.preventDefault();
         // console.log('room', roomB);
-        if (roomB.roomname==""){
+        if (roomB.room==""){
             return
         };
 
-        const names=rooms.map(({roomname}) => roomname );
+        const names=rooms.map(({room}) => room );
         console.log("names",names);
 
-        if(names.includes(roomB.roomname) ){
+        if(names.includes(roomB.room) ){
             console.log('Pick other name, this already exists');
-            // sconst [show, setShow] = useState(false);
-            const stat= true
-            const handleClose = () => stat= false;
-            // const handleShow = () => show= true;
-            const danger = () =>{<Modal show="true" onHide={handleClose}>
-                <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-                <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-                </Modal.Footer>
-            </Modal>};
-            
-            return
+            return;
         }
       
         const options = {
@@ -86,7 +84,7 @@ function Room(props){
         // console.log('Working rooms');
         // console.log({roomB}, {rooms} ,(options.body));
     
-        const response = await fetch("/api_v1/chats/rooms/", options).catch(
+        const response = await fetch("/api_v1/rooms/", options).catch(
             handleError
         );
         if (!response.ok){
@@ -130,12 +128,12 @@ function Room(props){
         </Dropdown.Menu>
         </Dropdown> */}
         <Form onSubmit={addRoom}>
-        <Form.Group className="mb-4" controlId="roomname:">
+        <Form.Group className="mb-4" controlId="room">
             <Form.Label> </Form.Label>
             <Form.Control 
             type="textarea"
-            value={roomB.roomname}
-            name="roomname"
+            value={roomB.room}
+            name="room"
             onChange={handleChange} />
             </Form.Group>
         
@@ -144,8 +142,10 @@ function Room(props){
         </Button>
         </Form>
 
-            
-       
+        <div>{roomsList}</div>
+
+            {<Chat roomId={roomId.id}/>}
+        
         
         
     

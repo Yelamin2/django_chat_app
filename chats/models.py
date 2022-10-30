@@ -1,23 +1,25 @@
 from email.policy import default
 from django.db import models
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 # Create your models here.
 class Room(models.Model):
-    roomname= models.CharField(max_length=40)
+    room= models.CharField(max_length=40)
 
     def __str__(self):
-        return self.roomname
+        return self.room
 
 class Chat(models.Model):
     message =models.TextField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     time = models.DateTimeField(auto_now_add=True, null=True)
-    roomname = models.ForeignKey(Room, on_delete=models.CASCADE, blank=True)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, blank=True, related_name="chats")
 
     def __str__(self):
-        return "%s %s" % (self.roomname, self.message)
+        return "%s %s" % (self.room, self.message)
 
 
 
